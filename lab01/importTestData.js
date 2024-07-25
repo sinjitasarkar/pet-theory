@@ -31,5 +31,25 @@ if (process.argv.length < 3) {
   console.error('Please include a path to a csv file');
   process.exit(1);
 }
+async function writeToFirestore(records) {
+  const db = new Firestore({  
+    // projectId: projectId
+  });
+  const batch = db.batch()
 
+  records.forEach((record)=>{
+    console.log(`Write: ${record}`)
+    const docRef = db.collection("customers").doc(record.email);
+    batch.set(docRef, record, { merge: true })
+  })
+
+  batch.commit()
+    .then(() => {
+       console.log('Batch executed')
+    })
+    .catch(err => {
+       console.log(`Batch error: ${err}`)
+    })
+  return
+}
 importCsv(process.argv[2]).catch(e => console.error(e));
