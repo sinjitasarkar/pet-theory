@@ -1,6 +1,6 @@
 const csv = require('csv-parse');
 const fs  = require('fs');
-
+const { Firestore } = require("@google-cloud/firestore"); // Add this
 function writeToDatabase(records) {
   records.forEach((record, i) => {
     console.log(`ID: ${record.id} Email: ${record.email} Name: ${record.name} Phone: ${record.phone}`);
